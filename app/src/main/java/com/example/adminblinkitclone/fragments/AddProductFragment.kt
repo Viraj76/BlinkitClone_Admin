@@ -1,21 +1,25 @@
 package com.example.adminblinkitclone.fragments
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.adminblinkitclone.Constants
 
 import com.example.adminblinkitclone.R
+import com.example.adminblinkitclone.adapter.AdapterSelectedImage
 import com.example.adminblinkitclone.databinding.FragmentAddProductBinding
 
 class AddProductFragment : Fragment() {
 
     private lateinit var binding : FragmentAddProductBinding
+    private val imageUris : ArrayList<Uri> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +35,13 @@ class AddProductFragment : Fragment() {
 
     private fun onImageSelectClicked() {
         binding.btnSelectImage.setOnClickListener {
+            registerForActivityResult(ActivityResultContracts.GetMultipleContents()){listOfUri->
+                val fiveImages = listOfUri.take(5)
+                imageUris.clear()
+                imageUris.addAll(fiveImages)
 
+                binding.rvProductImages.adapter = AdapterSelectedImage(imageUris)
+            }.launch("image/*")
         }
     }
 

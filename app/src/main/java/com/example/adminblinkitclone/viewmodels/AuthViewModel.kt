@@ -2,8 +2,8 @@ package com.example.adminblinkitclone.viewmodels
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
-import com.example.adminblinkitclone.Users
 import com.example.adminblinkitclone.Utils
+import com.example.adminblinkitclone.model.Admins
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
@@ -57,13 +57,13 @@ class AuthViewModel : ViewModel() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun signInWithPhoneAuthCredential(otp: String, userNumber: String, user: Users) {
+    fun signInWithPhoneAuthCredential(otp: String, userNumber: String, user: Admins) {
         val credential = PhoneAuthProvider.getCredential(_verificationId.value.toString(), otp)
         Utils.getAuthInstance().signInWithCredential(credential)
             .addOnCompleteListener{ task ->
                 user.uid = Utils.getCurrentUserId()
                 if (task.isSuccessful) {
-                    FirebaseDatabase.getInstance().getReference("AllUsers").child("Users").child(user.uid!!).setValue(user)
+                    FirebaseDatabase.getInstance().getReference("Admins").child("AdminInfo").child(user.uid!!).setValue(user)
                     _isSignedInSuccessfully.value = true
                 }
             }

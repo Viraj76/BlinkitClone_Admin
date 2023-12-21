@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.adminblinkitclone.AdminMainActivity
+import com.example.adminblinkitclone.activity.AdminMainActivity
 
 import com.example.adminblinkitclone.R
-import com.example.adminblinkitclone.Users
 import com.example.adminblinkitclone.Utils
 import com.example.adminblinkitclone.databinding.FragmentOTPBinding
+import com.example.adminblinkitclone.model.Admins
 import com.example.adminblinkitclone.viewmodels.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -60,9 +60,9 @@ class OTPFragment : Fragment() {
     }
     private fun verifyOtp(otp: String) {
 
-        val user = Users(uid = null, userPhoneNumber = userNumber , userAddress = null )
+        val admins = Admins(uid = null, adminPhoneNumber = userNumber )
 
-        viewModel.signInWithPhoneAuthCredential(otp,userNumber , user)
+        viewModel.signInWithPhoneAuthCredential(otp,userNumber , admins)
         lifecycleScope.launch {
             viewModel.isSignedInSuccessfully.collect{
                 if(it){

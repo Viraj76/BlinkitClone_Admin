@@ -20,6 +20,13 @@ class AddProductFragment : Fragment() {
 
     private lateinit var binding : FragmentAddProductBinding
     private val imageUris : ArrayList<Uri> = arrayListOf()
+    val selectedImage = registerForActivityResult(ActivityResultContracts.GetMultipleContents()){listOfUri->
+        val fiveImages = listOfUri.take(5)
+        imageUris.clear()
+        imageUris.addAll(fiveImages)
+
+        binding.rvProductImages.adapter = AdapterSelectedImage(imageUris)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,13 +42,7 @@ class AddProductFragment : Fragment() {
 
     private fun onImageSelectClicked() {
         binding.btnSelectImage.setOnClickListener {
-            registerForActivityResult(ActivityResultContracts.GetMultipleContents()){listOfUri->
-                val fiveImages = listOfUri.take(5)
-                imageUris.clear()
-                imageUris.addAll(fiveImages)
-
-                binding.rvProductImages.adapter = AdapterSelectedImage(imageUris)
-            }.launch("image/*")
+            selectedImage.launch("image/*")
         }
     }
 

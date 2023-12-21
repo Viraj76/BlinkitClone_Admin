@@ -27,7 +27,7 @@ class AdapterSelectedImage(val imageUris : ArrayList<Uri>)  : RecyclerView.Adapt
         holder.binding.closeButton.setOnClickListener {
             if(position < imageUris.size){
                 imageUris.removeAt(position)
-                notifyItemChanged(position)
+                notifyItemRemoved(position)
             }
         }
     }

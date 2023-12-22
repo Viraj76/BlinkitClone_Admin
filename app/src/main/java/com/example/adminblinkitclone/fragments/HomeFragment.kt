@@ -7,20 +7,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.adminblinkitclone.Constants
 
 import com.example.adminblinkitclone.R
+import com.example.adminblinkitclone.adapter.CategoriesAdapter
+import com.example.adminblinkitclone.databinding.FragmentHomeBinding
+import com.example.adminblinkitclone.model.Categories
 
 
 class HomeFragment : Fragment() {
-
-
+    private lateinit var binding  : FragmentHomeBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        binding  = FragmentHomeBinding.inflate(layoutInflater)
         setStatusBarColor()
-        return inflater.inflate(R.layout.fragment_home, container, false)
+
+        setCategories()
+        return binding.root
+    }
+
+    private fun setCategories() {
+        val categoryList = ArrayList<Categories>()
+
+        for(i in 0 until Constants.allProductsCategoryIcon.size){
+            categoryList.add(Categories(Constants.allProductsCategory[i] , Constants.allProductsCategoryIcon[i]))
+        }
+
+        binding.rvCategories.adapter = CategoriesAdapter(categoryList)
+
     }
 
     private fun setStatusBarColor() {

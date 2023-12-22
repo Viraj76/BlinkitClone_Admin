@@ -60,6 +60,7 @@ object Constants {
     )
 
     val allProductsCategoryIcon = arrayOf(
+        R.drawable.categories_all,
         R.drawable.vegetable,
         R.drawable.dairy_breakfast,
         R.drawable.munchies,

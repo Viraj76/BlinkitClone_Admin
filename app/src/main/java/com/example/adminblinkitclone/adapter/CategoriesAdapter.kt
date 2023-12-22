@@ -8,6 +8,7 @@ import com.example.adminblinkitclone.databinding.ItemViewProductCategoriesBindin
 import com.example.adminblinkitclone.model.Categories
 
 class CategoriesAdapter(
+
     private val categoryArrayList: ArrayList<Categories>,
 
     ) : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {

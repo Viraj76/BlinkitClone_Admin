@@ -1,6 +1,5 @@
 package com.example.adminblinkitclone.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +7,8 @@ import com.example.adminblinkitclone.databinding.ItemViewProductCategoriesBindin
 import com.example.adminblinkitclone.model.Categories
 
 class CategoriesAdapter(
-
     private val categoryArrayList: ArrayList<Categories>,
-
+   val  onCategoryClicked: (Categories) -> Unit,
     ) : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
 
     class CategoriesViewHolder(val binding : ItemViewProductCategoriesBinding) : RecyclerView.ViewHolder(binding.root)
@@ -29,6 +27,8 @@ class CategoriesAdapter(
             ivCategoryImage.setImageResource(category.icon)
             tvCategoryTitle.text = category.category
         }
-
+        holder.itemView.setOnClickListener {
+            onCategoryClicked(category)
+        }
     }
 }

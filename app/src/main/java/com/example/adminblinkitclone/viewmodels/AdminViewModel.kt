@@ -70,15 +70,17 @@ class AdminViewModel : ViewModel() {
     }
 
 
-    fun fetchAllTheProducts() : Flow<List<Product>> = callbackFlow {
+    fun fetchAllTheProducts(category: String): Flow<List<Product>> = callbackFlow {
         val db = FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts")
-
         val eventListener = object  : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val products = ArrayList<Product>()
                 for (product in snapshot.children){
                     val prod = product.getValue(Product::class.java)
-                    products.add(prod!!)
+                    if(category == "All" || prod?.productCategory == category){
+                        products.add(prod!!)
+                    }
+
                 }
                 trySend(products)
             }
@@ -91,6 +93,12 @@ class AdminViewModel : ViewModel() {
 
         awaitClose{db.removeEventListener(eventListener)
         }
+    }
+
+    fun savingUpdateProducts(product: Product){
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts/${product.productRandomId}").setValue(product)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory/${product.productRandomId}").setValue(product)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductType/${product.productRandomId}").setValue(product)
     }
 
 }

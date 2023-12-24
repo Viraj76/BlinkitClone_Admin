@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.adminblinkitclone.databinding.ItemViewProductBinding
-import com.example.adminblinkitclone.databinding.ItemViewProductCategoriesBinding
 import com.example.adminblinkitclone.model.Product
 
-class AdapterProduct : RecyclerView.Adapter<AdapterProduct.ProductViewHolder>() {
+class AdapterProduct(
+    val onEditButtonClicked: (Product) -> Unit) : RecyclerView.Adapter<AdapterProduct.ProductViewHolder>() {
     class ProductViewHolder(val binding : ItemViewProductBinding) : ViewHolder(binding.root)
 
     val diffutil = object  : DiffUtil.ItemCallback<Product>(){
@@ -54,6 +54,9 @@ class AdapterProduct : RecyclerView.Adapter<AdapterProduct.ProductViewHolder>() 
 
             tvProductPrice.text  =   "₹" + product.productPrice
 
+        }
+        holder.itemView.setOnClickListener {
+            onEditButtonClicked(product)
         }
 
     }

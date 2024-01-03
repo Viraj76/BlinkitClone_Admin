@@ -2,13 +2,14 @@ package com.example.adminblinkitclone.viewmodels
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
-import com.example.adminblinkitclone.Utils
+import com.example.adminblinkitclone.utils.Utils
 import com.example.adminblinkitclone.model.Admins
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.concurrent.TimeUnit
 
@@ -58,15 +59,22 @@ class AuthViewModel : ViewModel() {
     }
 
     fun signInWithPhoneAuthCredential(otp: String, userNumber: String, user: Admins) {
+
         val credential = PhoneAuthProvider.getCredential(_verificationId.value.toString(), otp)
-        Utils.getAuthInstance().signInWithCredential(credential)
-            .addOnCompleteListener{ task ->
-                user.uid = Utils.getCurrentUserId()
-                if (task.isSuccessful) {
-                    FirebaseDatabase.getInstance().getReference("Admins").child("AdminInfo").child(user.uid!!).setValue(user)
-                    _isSignedInSuccessfully.value = true
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {task ->
+            val token = task.result
+            user.adminToken = token
+            Utils.getAuthInstance().signInWithCredential(credential)
+                .addOnCompleteListener{ task ->
+                    user.uid = Utils.getCurrentUserId()
+                    if (task.isSuccessful) {
+                        FirebaseDatabase.getInstance().getReference("Admins").child("AdminInfo").child(user.uid!!).setValue(user)
+//                        adminToken
+                        _isSignedInSuccessfully.value = true
+                    }
                 }
-            }
+        }
+
     }
 
 

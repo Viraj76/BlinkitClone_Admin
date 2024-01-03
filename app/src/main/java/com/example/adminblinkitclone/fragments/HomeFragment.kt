@@ -1,5 +1,6 @@
 package com.example.adminblinkitclone.fragments
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -8,16 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Filterable
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.adminblinkitclone.Constants
+import com.example.adminblinkitclone.utils.Constants
 
 import com.example.adminblinkitclone.R
-import com.example.adminblinkitclone.Utils
+import com.example.adminblinkitclone.utils.Utils
+import com.example.adminblinkitclone.activity.AuthMainActivity
 import com.example.adminblinkitclone.adapter.AdapterProduct
 import com.example.adminblinkitclone.adapter.CategoriesAdapter
 import com.example.adminblinkitclone.databinding.EditProductLayoutBinding
@@ -40,11 +41,43 @@ class HomeFragment : Fragment() {
         setStatusBarColor()
 
         setCategories()
-
+        onLogOut()
         searchProducts()
         getAllTheProducts("All")
 
         return binding.root
+    }
+
+    private fun onLogOut() {
+        binding.tbHomeFragment.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.menuLogout ->{
+                    logOutUser()
+                    true
+                }
+
+                else -> {false}
+            }
+        }
+    }
+
+    private fun logOutUser(){
+
+            val builder =    AlertDialog.Builder(requireContext())
+            val alertDialog = builder.create()
+            builder.setTitle("Log out")
+                .setMessage("Do you want to log out ?")
+                .setPositiveButton("Yes"){_,_->
+                    viewModel.logOutUser()
+                    startActivity(Intent(requireContext() , AuthMainActivity::class.java))
+                    requireActivity().finish()
+                }
+                .setNegativeButton("No"){_,_ ->
+                    alertDialog.dismiss()
+                }
+                .show()
+                .setCancelable(false)
+
     }
 
     private fun searchProducts() {

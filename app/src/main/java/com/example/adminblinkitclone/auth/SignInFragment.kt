@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.example.adminblinkitclone.R
-import com.example.adminblinkitclone.Utils
+import com.example.adminblinkitclone.utils.Utils
 import com.example.adminblinkitclone.databinding.FragmentSignInBinding
 
 
